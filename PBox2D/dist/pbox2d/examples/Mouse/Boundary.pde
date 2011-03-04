@@ -22,8 +22,8 @@ class Boundary {
     h = h_;
 
     // Figure out the box2d coordinates
-    float box2dW = box2d.scaleScreenToWorld(w/2);
-    float box2dH = box2d.scaleScreenToWorld(h/2);
+    float box2dW = box2d.scalarPixelsToWorld(w/2);
+    float box2dH = box2d.scalarPixelsToWorld(h/2);
     Vec2 center = new Vec2(x,y);
 
     // Define the polygon
@@ -34,7 +34,7 @@ class Boundary {
 
     // Create the body
     BodyDef bd = new BodyDef();
-    bd.position.set(box2d.screenToWorld(center));
+    bd.position.set(box2d.coordPixelsToWorld(center));
     b = box2d.createBody(bd);
     b.createShape(sd);
   }

@@ -19,7 +19,7 @@ class Spring {
   void update(float x, float y) {
     if (mouseJoint != null) {
       // Always convert to world coordinates!
-      Vec2 mouseWorld = box2d.screenToWorld(x,y);
+      Vec2 mouseWorld = box2d.coordPixelsToWorld(x,y);
       mouseJoint.setTarget(mouseWorld);
     }
   }
@@ -30,8 +30,8 @@ class Spring {
       Vec2 v1 = mouseJoint.getAnchor1();
       Vec2 v2 = mouseJoint.getAnchor2();
       // Convert them to screen coordinates
-      v1 = box2d.worldToScreen(v1);
-      v2 = box2d.worldToScreen(v2);
+      v1 = box2d.coordWorldToPixels(v1);
+      v2 = box2d.coordWorldToPixels(v2);
       // And just draw a line
       stroke(0);
       strokeWeight(1);
@@ -51,7 +51,7 @@ class Spring {
     // Body 2 is the box's boxy
     md.body2 = box.body;
     // Get the mouse location in world coordinates
-    Vec2 mp = box2d.screenToWorld(x,y);
+    Vec2 mp = box2d.coordPixelsToWorld(x,y);
     // And that's the target
     md.target.set(mp);
     // Some stuff about how strong and bouncy the spring should be

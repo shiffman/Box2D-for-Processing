@@ -44,12 +44,12 @@ class Blob {
       // Make each individual body
       BodyDef bd = new BodyDef();
       bd.fixedRotation = true; // no rotation!
-      bd.position.set(box2d.screenToWorld(x,y));
+      bd.position.set(box2d.coordPixelsToWorld(x,y));
       Body body = box2d.createBody(bd);
 
       // The body is a circle
       CircleDef cd = new CircleDef();
-      cd.radius = box2d.scaleScreenToWorld(bodyRadius);
+      cd.radius = box2d.scalarPixelsToWorld(bodyRadius);
       cd.density = 1.0f;
       // For filtering out collisions
       cd.filter.groupIndex = -2;
@@ -85,7 +85,7 @@ class Blob {
     stroke(0);
     strokeWeight(1);
     for (Body b: skeleton) {
-      Vec2 pos = box2d.getScreenPos(b);
+      Vec2 pos = box2d.getBodyPixelCoord(b);
       vertex(pos.x,pos.y);
     }
     endShape(CLOSE);
@@ -93,7 +93,7 @@ class Blob {
     // Draw the individual circles
     for (Body b: skeleton) {
       // We look at each body and get its screen position
-      Vec2 pos = box2d.getScreenPos(b);
+      Vec2 pos = box2d.getBodyPixelCoord(b);
       // Get its angle of rotation
       float a = b.getAngle();
       pushMatrix();

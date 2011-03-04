@@ -42,7 +42,7 @@ class Bridge {
          djd.body1 = previous.body;
          djd.body2 = p.body;
          // Equilibrium length
-         djd.length = box2d.scaleScreenToWorld(len);
+         djd.length = box2d.scalarPixelsToWorld(len);
          // These properties affect how springy the joint is 
          djd.frequencyHz = 0;
 	 djd.dampingRatio = 0;

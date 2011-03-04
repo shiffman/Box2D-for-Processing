@@ -27,7 +27,7 @@ class Lollipop  {
   // Is the particle ready for deletion?
   boolean done() {
     // Let's find the screen position of the particle
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Is it off the bottom of the screen?
     if (pos.y > height+w*h) {
       killBody();
@@ -39,7 +39,7 @@ class Lollipop  {
   // Drawing the box
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
 
@@ -59,8 +59,8 @@ class Lollipop  {
 
     // Define a polygon (this is what we use for a rectangle)
     PolygonDef sd = new PolygonDef();
-    float box2dW = box2d.scaleScreenToWorld(w_/2);
-    float box2dH = box2d.scaleScreenToWorld(h_/2);
+    float box2dW = box2d.scalarPixelsToWorld(w_/2);
+    float box2dH = box2d.scalarPixelsToWorld(h_/2);
     sd.setAsBox(box2dW, box2dH);
 
     // Parameters that affect physics
@@ -71,9 +71,9 @@ class Lollipop  {
     // Define a circle
     CircleDef cd = new CircleDef();
     // Offset its "local position" (relative to 0,0)
-    float y = box2d.scaleScreenToWorld(h_);
-    cd.localPosition = new Vec2(0,y);
-    cd.radius = box2d.scaleScreenToWorld(h_/2);
+    Vec2 offset = new Vec2(0,-h);
+    cd.localPosition = box2d.vectorPixelsToWorld(offset);
+    cd.radius = box2d.scalarPixelsToWorld(h_/2);
     cd.density = 1.0f;
     cd.friction = 0.3f;
     cd.restitution = 0.5f;
@@ -81,7 +81,7 @@ class Lollipop  {
 
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
-    bd.position.set(box2d.screenToWorld(center));
+    bd.position.set(box2d.coordPixelsToWorld(center));
 
     body = box2d.createBody(bd);
     // Attach both shapes!

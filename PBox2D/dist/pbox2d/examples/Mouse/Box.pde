@@ -28,7 +28,7 @@ class Box {
   }
 
   boolean contains(float x, float y) {
-    Vec2 worldPoint = box2d.screenToWorld(x, y);
+    Vec2 worldPoint = box2d.coordPixelsToWorld(x, y);
     Shape s = body.getShapeList();
     boolean inside = s.testPoint(body.getMemberXForm(),worldPoint);
     return inside;
@@ -37,7 +37,7 @@ class Box {
   // Drawing the box
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
 
@@ -55,13 +55,13 @@ class Box {
   void makeBody(Vec2 center, float w_, float h_) {
     // Define and create the body
     BodyDef bd = new BodyDef();
-    bd.position.set(box2d.screenToWorld(center));
+    bd.position.set(box2d.coordPixelsToWorld(center));
     body = box2d.createBody(bd);
 
     // Define the shape -- a polygon (this is what we use for a rectangle)
     PolygonDef sd = new PolygonDef();
-    float box2dW = box2d.scaleScreenToWorld(w_/2);
-    float box2dH = box2d.scaleScreenToWorld(h_/2);
+    float box2dW = box2d.scalarPixelsToWorld(w_/2);
+    float box2dH = box2d.scalarPixelsToWorld(h_/2);
     sd.setAsBox(box2dW, box2dH);
     // Parameters that affect physics
     sd.density = 1.0f;

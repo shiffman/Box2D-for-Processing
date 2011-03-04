@@ -46,7 +46,7 @@ public class Particle extends ProcessingObject {
 	// Is the particle ready for deletion?
 	public boolean done() {
 		// Let's find the screen position of the particle
-		Vec2 pos = Liquid.box2d.getScreenPos(body);
+		Vec2 pos = Liquid.box2d.getBodyPixelCoord(body);
 		// Is it off the bottom of the screen?
 		if (pos.y > p.height+20) {
 			killBody();
@@ -58,7 +58,7 @@ public class Particle extends ProcessingObject {
 	// Drawing the box
 	public void display() {
 		// We look at each body and get its screen position
-		Vec2 pos = Liquid.box2d.getScreenPos(body);
+		Vec2 pos = Liquid.box2d.getBodyPixelCoord(body);
 		
 		// Keep track of a history of screen positions in an array
 		for (int i = 0; i < trail.length-1; i++) {

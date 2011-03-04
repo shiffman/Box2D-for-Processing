@@ -18,12 +18,12 @@ class Attractor {
     // Define a body
     BodyDef bd = new BodyDef();
     // Set its position
-    bd.position = box2d.screenToWorld(x,y);
+    bd.position = box2d.coordPixelsToWorld(x,y);
     body = box2d.world.createBody(bd);
 
     // Make the body's shape a circle
     CircleDef cd = new CircleDef();
-    cd.radius = box2d.scaleScreenToWorld(r);
+    cd.radius = box2d.scalarPixelsToWorld(r);
     cd.density = 0;
     cd.friction = 0.01;
     cd.restitution = 0.5; // Restitution is bounciness
@@ -57,7 +57,7 @@ class Attractor {
 
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
     pushMatrix();

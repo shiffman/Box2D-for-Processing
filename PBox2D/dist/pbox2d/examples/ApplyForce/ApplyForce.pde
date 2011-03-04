@@ -53,8 +53,8 @@ void draw() {
   
   if (mousePressed) {
     for (Box b: boxes) {
-     b.pushTowards(mouseX,mouseY);
-     }
+     b.attract(mouseX,mouseY);
+    }
   }
 
   // Display all the boundaries
@@ -75,6 +75,9 @@ void draw() {
       boxes.remove(i);
     }
   }
+  
+  fill(0);
+  text("Click mouse to attract boxes",20,20);
 }
 
 

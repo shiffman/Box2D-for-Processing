@@ -15,6 +15,8 @@ import org.jbox2d.common.XForm;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.JointDef;
 
 import processing.core.PApplet;
 
@@ -148,9 +150,15 @@ public class PBox2D {
 		return world.createBody(bd);
 	}
 	
+	
+	// A common task we have to do a lot
+	public Joint createJoint(JointDef jd) {
+		return world.createJoint(jd);
+	}
+	
 	// Another common task, find the position of a body
 	// so that we can draw it
-	public Vec2 getScreenPos(Body b) {
+	public Vec2 getBodyPixelCoord(Body b) {
 		XForm xf = b.getXForm();
 		return coordWorldToPixels(xf.position); 
 	}

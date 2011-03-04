@@ -70,9 +70,11 @@ void draw() {
   // Draw the windmill
   windmill.display();
   
+  String status = "OFF";
+  if (windmill.motorOn()) status = "ON";
   
   fill(0);
-  text("Click mouse to toggle motor.",10,290);
+  text("Click mouse to toggle motor.\nMotor: " + status,10,270);
 }
 
 

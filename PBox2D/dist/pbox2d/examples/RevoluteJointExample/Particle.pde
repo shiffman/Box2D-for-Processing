@@ -35,7 +35,7 @@ class Particle {
   // Is the particle ready for deletion?
   boolean done() {
     // Let's find the screen position of the particle
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Is it off the bottom of the screen?
     if (pos.y > height+r*2) {
       killBody();
@@ -47,7 +47,7 @@ class Particle {
   // 
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
     pushMatrix();
@@ -67,12 +67,12 @@ class Particle {
     // Define a body
     BodyDef bd = new BodyDef();
     // Set its position
-    bd.position = box2d.screenToWorld(x,y);
+    bd.position = box2d.coordPixelsToWorld(x,y);
     body = box2d.world.createBody(bd);
 
     // Make the body's shape a circle
     CircleDef cd = new CircleDef();
-    cd.radius = box2d.scaleScreenToWorld(r);
+    cd.radius = box2d.scalarPixelsToWorld(r);
     cd.density = 2.0;
     cd.friction = 0.01;
     cd.restitution = 0.3; // Restitution is bounciness

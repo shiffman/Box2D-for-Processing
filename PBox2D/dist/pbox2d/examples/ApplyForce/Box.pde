@@ -27,7 +27,7 @@ class Box {
   // Is the particle ready for deletion?
   boolean done() {
     // Let's find the screen position of the particle
-    Vec2 pos = box2d.getScreenPos(body);  
+    Vec2 pos = box2d.getBodyPixelCoord(body);  
     // Is it off the bottom of the screen?
     if (pos.y > height+w*h) {
       killBody();
@@ -36,13 +36,9 @@ class Box {
     return false;
   }
 
-    void applyForce(Vec2 v) {
-      Vec2 fv = new Vec2(v.x,v.y);
-      body.applyForce(fv, body.getMemberWorldCenter());
-    }
-
-  void pushTowards(float x,float y) {
-    Vec2 worldTarget = box2d.screenToWorld(x,y);    
+  void attract(float x,float y) {
+    // From BoxWrap2D example
+    Vec2 worldTarget = box2d.coordPixelsToWorld(x,y);   
     Vec2 bodyVec = body.getMemberWorldCenter();
     // First find the vector going from this body to the specified point
     worldTarget.subLocal(bodyVec);
@@ -57,7 +53,7 @@ class Box {
   // Drawing the box
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
     float a = body.getAngle();
 
@@ -76,8 +72,8 @@ class Box {
 
     // Define a polygon (this is what we use for a rectangle)
     PolygonDef sd = new PolygonDef();
-    float box2dW = box2d.scaleScreenToWorld(w_/2);
-    float box2dH = box2d.scaleScreenToWorld(h_/2);
+    float box2dW = box2d.scalarPixelsToWorld(w_/2);
+    float box2dH = box2d.scalarPixelsToWorld(h_/2);
     sd.setAsBox(box2dW, box2dH);
 
     // Parameters that affect physics
@@ -87,7 +83,7 @@ class Box {
 
     // Define the body and make it from the shape
     BodyDef bd = new BodyDef();
-    bd.position.set(box2d.screenToWorld(center));
+    bd.position.set(box2d.coordPixelsToWorld(center));
 
     body = box2d.createBody(bd);
     body.createShape(sd);

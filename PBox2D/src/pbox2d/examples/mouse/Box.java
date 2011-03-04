@@ -49,7 +49,7 @@ public class Box extends ProcessingObject {
 	// Drawing the box
 	public void display() {
 		// We look at each body and get its screen position
-		Vec2 pos = TossSpring.box2d.getScreenPos(body);
+		Vec2 pos = TossSpring.box2d.getBodyPixelCoord(body);
 		// Get its angle of rotation
 		float a = body.getAngle();
 

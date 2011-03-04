@@ -39,7 +39,7 @@ class Surface {
       surface.add(screenEdge);
 
       // Convert it to the box2d world and add it to our EdgeChainDef
-      Vec2 edge = box2d.screenToWorld(screenEdge);
+      Vec2 edge = box2d.coordPixelsToWorld(screenEdge);
       edges.addVertex(edge);
 
       // Move through perlin noise

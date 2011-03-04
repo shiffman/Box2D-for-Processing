@@ -35,7 +35,7 @@ class Particle {
   // Is the particle ready for deletion?
   boolean done() {
     // Let's find the screen position of the particle
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
     // Is it off the bottom of the screen?
     if (pos.y > height+20) {
       killBody();
@@ -47,7 +47,7 @@ class Particle {
   // Drawing the box
   void display() {
     // We look at each body and get its screen position
-    Vec2 pos = box2d.getScreenPos(body);
+    Vec2 pos = box2d.getBodyPixelCoord(body);
 
     // Keep track of a history of screen positions in an array
     for (int i = 0; i < trail.length-1; i++) {
@@ -70,7 +70,7 @@ class Particle {
   void makeBody(Vec2 center, float r) {
     // Define and create the body
     BodyDef bd = new BodyDef();
-    bd.position.set(box2d.screenToWorld(center));
+    bd.position.set(box2d.coordPixelsToWorld(center));
     body = box2d.createBody(bd);
 
     // Give it some initial random velocity
@@ -78,7 +78,7 @@ class Particle {
 
     // We'll make the shape a circle I guess (though we could have done rectangle, maybe faster?)
     CircleDef cd = new CircleDef();
-    r = box2d.scaleScreenToWorld(r);
+    r = box2d.scalarPixelsToWorld(r);
     cd.radius = r;
 
     // Parameters that affect physics

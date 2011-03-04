@@ -99,7 +99,7 @@ public class Blob extends ProcessingObject {
 		for (int i = 0; i < skeleton.size(); i++) {
 			// We look at each body and get its screen position
 			Body b = (Body) skeleton.get(i);
-			Vec2 pos = Blobby.box2d.getScreenPos(b);
+			Vec2 pos = Blobby.box2d.getBodyPixelCoord(b);
 			p.vertex(pos.x,pos.y);
 		}
 		p.endShape(p.CLOSE);
@@ -108,7 +108,7 @@ public class Blob extends ProcessingObject {
 		for (int i = 0; i < skeleton.size(); i++) {
 			Body b = (Body) skeleton.get(i);
 			// We look at each body and get its screen position
-			Vec2 pos = Blobby.box2d.getScreenPos(b);
+			Vec2 pos = Blobby.box2d.getBodyPixelCoord(b);
 			// Get its angle of rotation
 			float a = b.getAngle();
 			p.pushMatrix();

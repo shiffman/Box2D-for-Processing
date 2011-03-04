@@ -34,7 +34,7 @@ public class Particle extends ProcessingObject {
 	// Is the particle ready for deletion?
 	public boolean done() {
 		// Let's find the screen position of the particle
-		Vec2 pos = BumpySurface.box2d.getScreenPos(body);
+		Vec2 pos = BumpySurface.box2d.getBodyPixelCoord(body);
 		// Is it off the bottom of the screen?
 		if (pos.y > p.height+r*2) {
 			killBody();
@@ -46,7 +46,7 @@ public class Particle extends ProcessingObject {
 	// 
 	public void display() {
 		// We look at each body and get its screen position
-		Vec2 pos = BumpySurface.box2d.getScreenPos(body);
+		Vec2 pos = BumpySurface.box2d.getBodyPixelCoord(body);
 		// Get its angle of rotation
 		float a = body.getAngle();
 		p.pushMatrix();

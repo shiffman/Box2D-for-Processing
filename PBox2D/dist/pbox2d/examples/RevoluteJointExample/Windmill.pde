@@ -25,9 +25,9 @@ class Windmill {
     rjd.body2 = box2.body;
     
     // Set the points that anchor the joint to the bodies
-    Vec2 v1 = box2d.screenToWorld(x,y);
+    Vec2 v1 = box2d.coordPixelsToWorld(x,y);
     rjd.localAnchor1 = box1.body.getLocalPoint(v1);
-    Vec2 v2 = box2d.screenToWorld(x,y-20);
+    Vec2 v2 = box2d.coordPixelsToWorld(x,y-20);
     rjd.localAnchor2 = box1.body.getLocalPoint(v2);
     
     // Turning on a motor (optional)
@@ -46,6 +46,10 @@ class Windmill {
   // Turn the motor on or off
   void toggleMotor() {
     joint.enableMotor(!joint.isMotorEnabled());
+  }
+  
+  boolean motorOn() {
+    return joint.isMotorEnabled();
   }
 
 
