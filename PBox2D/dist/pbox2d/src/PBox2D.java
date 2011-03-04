@@ -15,6 +15,8 @@ import org.jbox2d.common.XForm;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.joints.Joint;
+import org.jbox2d.dynamics.joints.JointDef;
 
 import processing.core.PApplet;
 
@@ -64,6 +66,7 @@ public class PBox2D {
 	
 	// More custom
 	public void step(boolean starting, boolean correction, boolean continuous, float timeStep, int iterationCount) {
+		
 		world.setWarmStarting(starting);
 		world.setPositionCorrection(correction);
 		world.setContinuousPhysics(continuous);
@@ -95,50 +98,69 @@ public class PBox2D {
 	
 	// These functions are very important
 	// Box2d has its own coordinate system and we have to move back and forth between them
-	// convert from Box2d world to screen world
-	public Vec2 worldToScreen(Vec2 world) {
-		float x = PApplet.map(world.x, 0f, 1f, transX, transX+scaleFactor);
-		float y = PApplet.map(world.y, 0f, 1f, transY, transY+scaleFactor);
-		if (yFlip == -1.0f) y = PApplet.map(y,0f,parent.height, parent.height,0f);
-		return new Vec2(x, y);
+	// convert from Box2d world to pixel space
+	public Vec2 coordWorldToPixels(Vec2 world) {
+		return coordWorldToPixels(world.x,world.y);
 	}
 	
-	public Vec2 worldToScreen(float x, float y) {
-		return worldToScreen(new Vec2(x,y));
+	public Vec2 coordWorldToPixels(float worldX, float worldY) {
+		float pixelX = PApplet.map(worldX, 0f, 1f, transX, transX+scaleFactor);
+		float pixelY = PApplet.map(worldY, 0f, 1f, transY, transY+scaleFactor);
+		if (yFlip == -1.0f) pixelY = PApplet.map(pixelY,0f,parent.height, parent.height,0f);
+		return new Vec2(pixelX, pixelY);
 	}
 
-	// convert from screen world to box2d world
-	public Vec2 screenToWorld(Vec2 screen) {
-		float x = PApplet.map(screen.x, transX, transX+scaleFactor, 0f, 1f);
-		float y = screen.y;
-		if (yFlip == -1.0f) y = PApplet.map(y,parent.height,0f,0f,parent.height);
-		y = PApplet.map(y, transY, transY+scaleFactor, 0f, 1f);
-		return new Vec2(x,y);
+	// convert Coordinate from pixel space to box2d world
+	public Vec2 coordPixelsToWorld(Vec2 screen) {
+		return coordPixelsToWorld(screen.x,screen.y);
 	}
 
-	public Vec2 screenToWorld(float x, float y) {
-		return screenToWorld(new Vec2(x,y));
+	public Vec2 coordPixelsToWorld(float pixelX, float pixelY) {
+		float worldX = PApplet.map(pixelX, transX, transX+scaleFactor, 0f, 1f);
+		float worldY = pixelY;
+		if (yFlip == -1.0f) worldY = PApplet.map(pixelY,parent.height,0f,0f,parent.height);
+		worldY = PApplet.map(worldY, transY, transY+scaleFactor, 0f, 1f);
+		return new Vec2(worldX,worldY);
 	}
 
-	// Scale between worlds
-	public float scaleScreenToWorld(float val) {
+	// Scale scalar quantity between worlds
+	public float scalarPixelsToWorld(float val) {
 		return val / scaleFactor;
 	}
 
-	public float scaleWorldToScreen(float val) {
+	public float scalarWorldToPixels(float val) {
 		return val * scaleFactor;
 	}
+	
+	// Scale vector between worlds
+	public Vec2 vectorPixelsToWorld(Vec2 v) {
+		Vec2 u = new Vec2(v.x/scaleFactor,v.y/scaleFactor);
+		u.y *=  yFlip;
+		return u;
+	}
 
+	public Vec2 vectorWorldToPixels(Vec2 v) {
+		Vec2 u = new Vec2(v.x*scaleFactor,v.y*scaleFactor);
+		u.y *=  yFlip;
+		return u;
+	}
+	
 	// A common task we have to do a lot
 	public Body createBody(BodyDef bd) {
 		return world.createBody(bd);
 	}
 	
+	
+	// A common task we have to do a lot
+	public Joint createJoint(JointDef jd) {
+		return world.createJoint(jd);
+	}
+	
 	// Another common task, find the position of a body
 	// so that we can draw it
-	public Vec2 getScreenPos(Body b) {
+	public Vec2 getBodyPixelCoord(Body b) {
 		XForm xf = b.getXForm();
-		return worldToScreen(xf.position); 
+		return coordWorldToPixels(xf.position); 
 	}
 
 	public void destroyBody(Body b) {
