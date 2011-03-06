@@ -1,6 +1,6 @@
 // The Nature of Code
 // <http://www.shiffman.net/teaching/nature>
-// Spring 2010
+// Spring 2011
 // PBox2D example
 
 // Box2D particle system example

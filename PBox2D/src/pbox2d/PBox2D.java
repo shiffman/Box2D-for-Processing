@@ -85,7 +85,7 @@ public class PBox2D {
 	public void createWorld(float lx,float ly, float ux, float uy) {
 		AABB worldAABB = new AABB();
 		worldAABB.lowerBound.set(lx, ly);
-		worldAABB.upperBound.set(ux, ux);
+		worldAABB.upperBound.set(ux, uy);
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
 		boolean doSleep = true;
 		world = new World(worldAABB, gravity, doSleep);
