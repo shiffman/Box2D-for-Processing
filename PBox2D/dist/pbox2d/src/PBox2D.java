@@ -19,6 +19,7 @@ import org.jbox2d.dynamics.joints.Joint;
 import org.jbox2d.dynamics.joints.JointDef;
 
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public class PBox2D {
 
@@ -32,6 +33,8 @@ public class PBox2D {
 	public float transY;// = 240.0f;
 	public float scaleFactor;// = 10.0f;
 	public float yFlip;// = -1.0f; //flip y coordinate
+	
+	PContactListener contactlistener;
 
 	// Construct with a default scaleFactor of 10
 	public PBox2D(PApplet p) {
@@ -45,7 +48,12 @@ public class PBox2D {
 		scaleFactor = sf;
 		yFlip = -1;
 	}
-
+	
+	public void listenForCollisions() {
+		contactlistener = new PContactListener(parent);
+		world.setContactListener(contactlistener);
+	}
+	
 	// Change the scaleFactor
 	public void setScaleFactor(float scale) {
 		scaleFactor = scale;
@@ -85,7 +93,7 @@ public class PBox2D {
 	public void createWorld(float lx,float ly, float ux, float uy) {
 		AABB worldAABB = new AABB();
 		worldAABB.lowerBound.set(lx, ly);
-		worldAABB.upperBound.set(ux, ux);
+		worldAABB.upperBound.set(ux, uy);
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
 		boolean doSleep = true;
 		world = new World(worldAABB, gravity, doSleep);
@@ -103,6 +111,11 @@ public class PBox2D {
 		return coordWorldToPixels(world.x,world.y);
 	}
 	
+	public PVector coordWorldToPixelsPVector(Vec2 world) {
+		Vec2 v = coordWorldToPixels(world.x,world.y);
+		return new PVector(v.x,v.y);
+	}
+	
 	public Vec2 coordWorldToPixels(float worldX, float worldY) {
 		float pixelX = PApplet.map(worldX, 0f, 1f, transX, transX+scaleFactor);
 		float pixelY = PApplet.map(worldY, 0f, 1f, transY, transY+scaleFactor);
@@ -112,6 +125,10 @@ public class PBox2D {
 
 	// convert Coordinate from pixel space to box2d world
 	public Vec2 coordPixelsToWorld(Vec2 screen) {
+		return coordPixelsToWorld(screen.x,screen.y);
+	}
+	
+	public Vec2 coordPixelsToWorld(PVector screen) {
 		return coordPixelsToWorld(screen.x,screen.y);
 	}
 
@@ -138,9 +155,21 @@ public class PBox2D {
 		u.y *=  yFlip;
 		return u;
 	}
+	
+	public Vec2 vectorPixelsToWorld(PVector v) {
+		Vec2 u = new Vec2(v.x/scaleFactor,v.y/scaleFactor);
+		u.y *=  yFlip;
+		return u;
+	}
 
 	public Vec2 vectorWorldToPixels(Vec2 v) {
 		Vec2 u = new Vec2(v.x*scaleFactor,v.y*scaleFactor);
+		u.y *=  yFlip;
+		return u;
+	}
+	
+	public PVector vectorWorldToPixelsPVector(Vec2 v) {
+		PVector u = new PVector(v.x*scaleFactor,v.y*scaleFactor);
 		u.y *=  yFlip;
 		return u;
 	}
@@ -161,6 +190,11 @@ public class PBox2D {
 	public Vec2 getBodyPixelCoord(Body b) {
 		XForm xf = b.getXForm();
 		return coordWorldToPixels(xf.position); 
+	}
+	
+	public PVector getBodyPixelCoordPVector(Body b) {
+		XForm xf = b.getXForm();
+		return coordWorldToPixelsPVector(xf.position); 
 	}
 
 	public void destroyBody(Body b) {

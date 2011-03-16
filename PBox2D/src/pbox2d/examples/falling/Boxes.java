@@ -10,6 +10,8 @@ package pbox2d.examples.falling;
 
 import java.util.ArrayList;
 
+import org.jbox2d.dynamics.contacts.ContactPoint;
+
 
 import pbox2d.PBox2D;
 import processing.core.PApplet;
@@ -36,6 +38,8 @@ public class Boxes extends PApplet {
 		box2d.createWorld();
 		// We are setting a custom gravity
 		box2d.setGravity(0, -20);
+		
+		box2d.listenForCollisions();
 		
 		// Create ArrayLists	
 		boxes = new ArrayList();
@@ -80,6 +84,10 @@ public class Boxes extends PApplet {
 				boxes.remove(i);
 			}
 		}
+	}
+	
+	public void addContact(ContactPoint cp) {
+		System.out.println("TEST");
 	}
 	
 	/**** Standard Run ****/
