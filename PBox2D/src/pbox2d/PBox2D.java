@@ -10,8 +10,9 @@
 package pbox2d;
 
 import org.jbox2d.collision.AABB;
+import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.common.XForm;
+//import org.jbox2d.common.XForm;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
@@ -38,7 +39,7 @@ public class PBox2D {
 
 	// Construct with a default scaleFactor of 10
 	public PBox2D(PApplet p) {
-		this(p,10);
+		this(p,20);
 	}
 
 	public PBox2D(PApplet p, float sf) {
@@ -64,40 +65,41 @@ public class PBox2D {
 	// Default
 	public void step() {
 		float timeStep = 1.0f / 60f;
-		this.step(timeStep,10);
+		this.step(timeStep,10,10);
 	}
 	
 	// Custom
-	public void step(float timeStep, int iterationCount) {
-		this.step(true,true,true,timeStep, iterationCount);
+	public void step(float timeStep, int velocityIterations, int positionIterations) {
+		world.step(timeStep, velocityIterations, positionIterations);
 	}
 	
-	// More custom
-	public void step(boolean starting, boolean correction, boolean continuous, float timeStep, int iterationCount) {
-		
-		world.setWarmStarting(starting);
-		world.setPositionCorrection(correction);
-		world.setContinuousPhysics(continuous);
-		world.step(timeStep, iterationCount);
+	public void setWarmStarting(boolean b) {
+		world.setWarmStarting(b);
 	}
 	
-	
+	public void setContinuousPhysics(boolean b) {
+		world.setContinuousPhysics(b);
+	}
 
-	// Create a default world
+	// Create a default world with default gravity
 	public void createWorld() {
-		createWorld(-100,-100,100,100);
+		Vec2 gravity = new Vec2(0.0f, -10.0f);
+		createWorld(gravity,true);
+		setWarmStarting(true);
+		setContinuousPhysics(true);
+	}
+	
+	public void createWorld(Vec2 gravity, boolean doSleep) {
+		createWorld(gravity, doSleep,true,true);
 	}
 
-	// Slightly more custom world
-	// These values define how much we are looking at?
-	public void createWorld(float lx,float ly, float ux, float uy) {
-		AABB worldAABB = new AABB();
-		worldAABB.lowerBound.set(lx, ly);
-		worldAABB.upperBound.set(ux, uy);
-		Vec2 gravity = new Vec2(0.0f, -10.0f);
-		boolean doSleep = true;
-		world = new World(worldAABB, gravity, doSleep);
+	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
+		world = new World(gravity, doSleep);
+		setWarmStarting(warmStarting);
+		setContinuousPhysics(continous);
 	}
+
+	
 
 	// Set the gravity (this can change in real-time)
 	public void setGravity(float x, float y) {
@@ -179,7 +181,6 @@ public class PBox2D {
 		return world.createBody(bd);
 	}
 	
-	
 	// A common task we have to do a lot
 	public Joint createJoint(JointDef jd) {
 		return world.createJoint(jd);
@@ -188,12 +189,12 @@ public class PBox2D {
 	// Another common task, find the position of a body
 	// so that we can draw it
 	public Vec2 getBodyPixelCoord(Body b) {
-		XForm xf = b.getXForm();
+		Transform xf = b.getTransform();//b.getXForm();
 		return coordWorldToPixels(xf.position); 
 	}
 	
 	public PVector getBodyPixelCoordPVector(Body b) {
-		XForm xf = b.getXForm();
+		Transform xf = b.getTransform();
 		return coordWorldToPixelsPVector(xf.position); 
 	}
 

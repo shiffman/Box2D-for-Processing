@@ -10,9 +10,6 @@ package pbox2d.examples.falling;
 
 import java.util.ArrayList;
 
-import org.jbox2d.dynamics.contacts.ContactPoint;
-
-
 import pbox2d.PBox2D;
 import processing.core.PApplet;
 import util.ProcessingObject;
@@ -23,9 +20,9 @@ public class Boxes extends PApplet {
 	static PBox2D box2d;
 
 	// A list we'll use to track fixed objects
-	ArrayList boundaries;
+	ArrayList<Boundary> boundaries;
 	// A list for all of our rectangles
-	ArrayList boxes;
+	ArrayList<Box> boxes;
 
 	public void setup() {
 		size(400,300);
@@ -42,8 +39,8 @@ public class Boxes extends PApplet {
 		box2d.listenForCollisions();
 		
 		// Create ArrayLists	
-		boxes = new ArrayList();
-		boundaries = new ArrayList();
+		boxes = new ArrayList<Box>();
+		boundaries = new ArrayList<Boundary>();
 		
 		// Add a bunch of fixed boundaries
 		boundaries.add(new Boundary(width/4,height-5,width/2-50,10));
@@ -65,15 +62,13 @@ public class Boxes extends PApplet {
 		}
 		
 		// Display all the boundaries
-		for (int i = 0; i < boundaries.size(); i++) {
-			Boundary wall = (Boundary) boundaries.get(i);
+		for (Boundary wall: boundaries) {
 			wall.display();
 		}
 
 		// Display all the boxes
-		for (int i = 0; i < boxes.size(); i++) {
-			Box p = (Box) boxes.get(i);
-			p.display();
+		for (Box b : boxes) {
+			b.display();
 		}
 		
 		// Boxes that leave the screen, we delete them
@@ -84,10 +79,6 @@ public class Boxes extends PApplet {
 				boxes.remove(i);
 			}
 		}
-	}
-	
-	public void addContact(ContactPoint cp) {
-		System.out.println("TEST");
 	}
 	
 	/**** Standard Run ****/

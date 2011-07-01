@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/JBox2D-2.0.1-b250-Library_ds.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JBox2D"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
