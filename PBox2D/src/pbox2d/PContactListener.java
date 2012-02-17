@@ -35,12 +35,12 @@ public class PContactListener implements ContactListener {
 		try {
 			postMethod = parent.getClass().getMethod("postSolve", new Class[] { Contact.class, ContactImpulse.class });
         } catch (Exception e) {
-            System.out.println("You are missing the postSolve() method. " + e);
+            //System.out.println("You are missing the postSolve() method. " + e);
         }
 		try {
 			preMethod = parent.getClass().getMethod("preSolve", new Class[] { Contact.class, Manifold.class });
         } catch (Exception e) {
-            System.out.println("You are missing the preSolve() method. " + e);
+            //System.out.println("You are missing the preSolve() method. " + e);
         }
 	}
 

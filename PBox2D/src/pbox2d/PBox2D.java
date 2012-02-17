@@ -9,10 +9,8 @@
 
 package pbox2d;
 
-import org.jbox2d.collision.AABB;
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
-//import org.jbox2d.common.XForm;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.BodyDef;
 import org.jbox2d.dynamics.World;
@@ -34,12 +32,15 @@ public class PBox2D {
 	public float transY;// = 240.0f;
 	public float scaleFactor;// = 10.0f;
 	public float yFlip;// = -1.0f; //flip y coordinate
+
+	
+	Body groundBody;
 	
 	PContactListener contactlistener;
 
 	// Construct with a default scaleFactor of 10
 	public PBox2D(PApplet p) {
-		this(p,20);
+		this(p,10);
 	}
 
 	public PBox2D(PApplet p, float sf) {
@@ -48,6 +49,7 @@ public class PBox2D {
 		transY = parent.height/2;
 		scaleFactor = sf;
 		yFlip = -1;
+		
 	}
 	
 	public void listenForCollisions() {
@@ -65,7 +67,8 @@ public class PBox2D {
 	// Default
 	public void step() {
 		float timeStep = 1.0f / 60f;
-		this.step(timeStep,10,10);
+		this.step(timeStep,10,8);
+		world.clearForces();
 	}
 	
 	// Custom
@@ -84,7 +87,7 @@ public class PBox2D {
 	// Create a default world with default gravity
 	public void createWorld() {
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
-		createWorld(gravity,true);
+		createWorld(gravity,false);
 		setWarmStarting(true);
 		setContinuousPhysics(true);
 	}
@@ -93,10 +96,23 @@ public class PBox2D {
 		createWorld(gravity, doSleep,true,true);
 	}
 
+//	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
+//		world = new World(gravity, doSleep);
+//		setWarmStarting(warmStarting);
+//		setContinuousPhysics(continous);
+//	}
+	
 	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
-		world = new World(gravity, doSleep);
+		world = new World(gravity);
 		setWarmStarting(warmStarting);
 		setContinuousPhysics(continous);
+		
+	    BodyDef bodyDef = new BodyDef();
+	    groundBody = world.createBody(bodyDef);
+	}
+	
+	public Body getGroundBody() {
+		return groundBody;
 	}
 
 	
@@ -163,6 +179,12 @@ public class PBox2D {
 		u.y *=  yFlip;
 		return u;
 	}
+	
+	public Vec2 vectorPixelsToWorld(float x, float y) {
+		Vec2 u = new Vec2(x/scaleFactor,y/scaleFactor);
+		u.y *=  yFlip;
+		return u;
+	}
 
 	public Vec2 vectorWorldToPixels(Vec2 v) {
 		Vec2 u = new Vec2(v.x*scaleFactor,v.y*scaleFactor);
@@ -190,12 +212,13 @@ public class PBox2D {
 	// so that we can draw it
 	public Vec2 getBodyPixelCoord(Body b) {
 		Transform xf = b.getTransform();//b.getXForm();
-		return coordWorldToPixels(xf.position); 
+		//return coordWorldToPixels(xf.position); 
+		return coordWorldToPixels(xf.p); 
 	}
 	
 	public PVector getBodyPixelCoordPVector(Body b) {
 		Transform xf = b.getTransform();
-		return coordWorldToPixelsPVector(xf.position); 
+		return coordWorldToPixelsPVector(xf.p); 
 	}
 
 	public void destroyBody(Body b) {
