@@ -87,13 +87,13 @@ public class PBox2D {
 	// Create a default world with default gravity
 	public void createWorld() {
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
-		createWorld(gravity,false);
+		createWorld(gravity);
 		setWarmStarting(true);
 		setContinuousPhysics(true);
 	}
 	
-	public void createWorld(Vec2 gravity, boolean doSleep) {
-		createWorld(gravity, doSleep,true,true);
+	public void createWorld(Vec2 gravity) {
+		createWorld(gravity,true,true);
 	}
 
 //	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
@@ -102,7 +102,7 @@ public class PBox2D {
 //		setContinuousPhysics(continous);
 //	}
 	
-	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
+	public void createWorld(Vec2 gravity, boolean warmStarting, boolean continous) {
 		world = new World(gravity);
 		setWarmStarting(warmStarting);
 		setContinuousPhysics(continous);
