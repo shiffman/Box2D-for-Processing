@@ -12,27 +12,31 @@ class Particle {
   float r;
   
   color col;
-
-  Particle(float x, float y, float r_, boolean fixed) {
-    r = r_;
+  
+  Particle(float x, float y) {
+    r = 8;
     
     // Define a body
     BodyDef bd = new BodyDef();
     // Set its position
     bd.position = box2d.coordPixelsToWorld(x,y);
+    bd.type = BodyType.DYNAMIC;
     body = box2d.world.createBody(bd);
 
     // Make the body's shape a circle
-    CircleDef cd = new CircleDef();
-    cd.radius = box2d.scalarPixelsToWorld(r);
-    if (fixed) cd.density = 0;
-    else cd.density = 1.0;
-    cd.friction = 0.01;
-    cd.restitution = 0.3; // Restitution is bounciness
-    body.createShape(cd);
-
-    // Always do this at the end
-    body.setMassFromShapes();
+    CircleShape cs = new CircleShape();
+    cs.m_radius = box2d.scalarPixelsToWorld(r);
+    
+    FixtureDef fd = new FixtureDef();
+    fd.shape = cs;
+    // Parameters that affect physics
+    fd.density = 1;
+    fd.friction = 0.01;
+    fd.restitution = 0.3;
+    
+    // Attach fixture to body
+    body.createFixture(fd);
+    body.setLinearVelocity(new Vec2(random(-5, 5), random(2, 5)));
 
     col = color(175);
   }
@@ -54,7 +58,6 @@ class Particle {
     return false;
   }
 
-  // 
   void display() {
     // We look at each body and get its screen position
     Vec2 pos = box2d.getBodyPixelCoord(body);

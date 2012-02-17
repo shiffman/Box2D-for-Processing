@@ -19,14 +19,14 @@ ArrayList<Boundary> boundaries;
 ArrayList<Box> boxes;
 
 void setup() {
-  size(400,300);
+  size(640,360);
   smooth();
 
   // Initialize box2d physics and create the world
   box2d = new PBox2D(this);
   box2d.createWorld();
   // We are setting a custom gravity
-  box2d.setGravity(0, -20);
+  box2d.setGravity(0, -10);
 
   // Create ArrayLists	
   boxes = new ArrayList<Box>();
@@ -34,9 +34,7 @@ void setup() {
 
   // Add a bunch of fixed boundaries
   boundaries.add(new Boundary(width/4,height-5,width/2-50,10));
-  boundaries.add(new Boundary(3*width/4,height-5,width/2-50,10));
-  boundaries.add(new Boundary(width-5,height/2,10,height));
-  boundaries.add(new Boundary(5,height/2,10,height));
+  boundaries.add(new Boundary(3*width/4,height-50,width/2-50,10));
 }
 
 void draw() {
@@ -45,9 +43,9 @@ void draw() {
   // We must always step through time!
   box2d.step();
 
-  // When the mouse is clicked, add a new Box object
-  if (mousePressed) {
-    Box p = new Box(mouseX,mouseY);
+  // Boxes fall from the top every so often
+  if (random(1) < 0.2) {
+    Box p = new Box(width/2,30);
     boxes.add(p);
   }
 
