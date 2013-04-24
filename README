@@ -2,7 +2,4 @@ A collection of basic examples and/or Processing library to make using JBox2D (h
 
 Download library: http://www.shiffman.net/p5/libraries/pbox2d/pbox2d.zip
 
-(The tutorial below is out of date as the library now works with JBox2D 2.1.2. Stay tuned.)
-
-Full tutorial and examples available here: 
-http://www.shiffman.net/teaching/nature/box2d-processing/
+Tutorial and further examples for this library are avaiable in The Nature of Code book: http://natureofcode.com.
