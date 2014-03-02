@@ -1,7 +1,7 @@
 // The Nature of Code
 // <http://www.shiffman.net/teaching/nature>
 // Spring 2011
-// PBox2D example
+// Box2DProcessing example
 
 // Series of Particles connected with distance joints
 
