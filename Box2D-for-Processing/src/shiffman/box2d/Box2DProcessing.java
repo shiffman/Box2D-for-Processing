@@ -7,7 +7,7 @@
  * Daniel Shiffman <http://www.shiffman.net>
  */
 
-package pbox2d;
+package shiffman.box2d;
 
 import org.jbox2d.common.Transform;
 import org.jbox2d.common.Vec2;
@@ -20,7 +20,7 @@ import org.jbox2d.dynamics.joints.JointDef;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class PBox2D {
+public class Box2DProcessing {
 
 	PApplet parent;
 
@@ -36,14 +36,14 @@ public class PBox2D {
 	
 	Body groundBody;
 	
-	PContactListener contactlistener;
+	Box2DContactListener contactlistener;
 
 	// Construct with a default scaleFactor of 10
-	public PBox2D(PApplet p) {
+	public Box2DProcessing(PApplet p) {
 		this(p,10);
 	}
 
-	public PBox2D(PApplet p, float sf) {
+	public Box2DProcessing(PApplet p, float sf) {
 		parent = p;
 		transX = parent.width/2;
 		transY = parent.height/2;
@@ -53,7 +53,7 @@ public class PBox2D {
 	}
 	
 	public void listenForCollisions() {
-		contactlistener = new PContactListener(parent);
+		contactlistener = new Box2DContactListener(parent);
 		world.setContactListener(contactlistener);
 	}
 	

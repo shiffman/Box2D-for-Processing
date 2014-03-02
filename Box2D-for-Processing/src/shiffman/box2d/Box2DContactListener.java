@@ -1,4 +1,4 @@
-package pbox2d;
+package shiffman.box2d;
 
 import java.lang.reflect.Method;
 
@@ -10,7 +10,7 @@ import org.jbox2d.dynamics.contacts.Contact;
 
 import processing.core.PApplet;
 
-public class PContactListener implements ContactListener {
+public class Box2DContactListener implements ContactListener {
 	PApplet parent;
 	
 	Method beginMethod;
@@ -18,7 +18,7 @@ public class PContactListener implements ContactListener {
 	Method postMethod;
 	Method preMethod;
 	
-	PContactListener(PApplet p){
+	Box2DContactListener(PApplet p){
 		parent = p;
 		
 		try {
