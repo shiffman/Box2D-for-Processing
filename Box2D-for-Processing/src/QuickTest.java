@@ -31,10 +31,6 @@ public class QuickTest extends PApplet {
 	// Basic example of falling rectangles
 
 
-
-
-
-
 	// A reference to our box2d world
 	Box2DProcessing box2d;
 
@@ -42,11 +38,14 @@ public class QuickTest extends PApplet {
 	ArrayList<Boundary> boundaries;
 	// A list for all of our rectangles
 	ArrayList<Box> boxes;
+	
+	public void settings() {
+		size(400,300);
+
+	}
 
 	public void setup() {
-		size(400,300);
 		randomSeed(5);
-		smooth();
 
 		// Initialize box2d physics and create the world
 		box2d = new Box2DProcessing(this,10);
