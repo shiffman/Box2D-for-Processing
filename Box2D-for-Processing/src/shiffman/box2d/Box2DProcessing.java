@@ -25,13 +25,13 @@ public class Box2DProcessing {
 	PApplet parent;
 
 	// The Box2D world
-	public World world;
+	World world;
 
 	// Variables to keep track of translating between world and screen coordinates
-	public float transX;// = 320.0f;
-	public float transY;// = 240.0f;
-	public float scaleFactor;// = 10.0f;
-	public float yFlip;// = -1.0f; //flip y coordinate
+	float transX;// = 320.0f;
+	float transY;// = 240.0f;
+	float scaleFactor;// = 10.0f;
+	float yFlip;// = -1.0f; //flip y coordinate
 
 	
 	Body groundBody;
