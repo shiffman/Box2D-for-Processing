@@ -1,5 +1,5 @@
 /**
- * PBox2d
+ * Box2D for Processing
  * This is a simple little wrapper to help integrate JBox2d with Processing
  * It doesn't do much right now and, in some ways, limits the user
  * It's an open question as to whether this should really be a library
@@ -33,9 +33,10 @@ public class Box2DProcessing {
 	public float scaleFactor;// = 10.0f;
 	public float yFlip;// = -1.0f; //flip y coordinate
 
-	
+	// A variable to store an optional ground body
 	Body groundBody;
 	
+	// Reference to a Contact Listener
 	Box2DContactListener contactlistener;
 
 	// Construct with a default scaleFactor of 10
@@ -71,7 +72,7 @@ public class Box2DProcessing {
 		world.clearForces();
 	}
 	
-	// Custom
+	// Custom step
 	public void step(float timeStep, int velocityIterations, int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
 	}
@@ -95,14 +96,8 @@ public class Box2DProcessing {
 	public void createWorld(Vec2 gravity) {
 		createWorld(gravity,true,true);
 	}
-
-//	public void createWorld(Vec2 gravity, boolean doSleep, boolean warmStarting, boolean continous) {
-//		world = new World(gravity, doSleep);
-//		setWarmStarting(warmStarting);
-//		setContinuousPhysics(continous);
-//	}
 	
-	public void createWorld(Vec2 gravity, boolean warmStarting, boolean continous) {
+	public void createWorld(Vec2 gravity, boolean warmStarting, boolean continuous) {
 		world = new World(gravity);
 		setWarmStarting(warmStarting);
 		setContinuousPhysics(continous);
@@ -113,9 +108,7 @@ public class Box2DProcessing {
 	
 	public Body getGroundBody() {
 		return groundBody;
-	}
-
-	
+	}	
 
 	// Set the gravity (this can change in real-time)
 	public void setGravity(float x, float y) {
@@ -124,7 +117,8 @@ public class Box2DProcessing {
 	
 	// These functions are very important
 	// Box2d has its own coordinate system and we have to move back and forth between them
-	// convert from Box2d world to pixel space
+	
+	// Converts from Box2d world to pixel space
 	public Vec2 coordWorldToPixels(Vec2 world) {
 		return coordWorldToPixels(world.x,world.y);
 	}
@@ -141,7 +135,7 @@ public class Box2DProcessing {
 		return new Vec2(pixelX, pixelY);
 	}
 
-	// convert Coordinate from pixel space to box2d world
+	// Converts a coordinate from pixel space to the box2d world
 	public Vec2 coordPixelsToWorld(Vec2 screen) {
 		return coordPixelsToWorld(screen.x,screen.y);
 	}
@@ -208,11 +202,9 @@ public class Box2DProcessing {
 		return world.createJoint(jd);
 	}
 	
-	// Another common task, find the position of a body
-	// so that we can draw it
+	// Another common task, find the position of a body so that it can be drawn
 	public Vec2 getBodyPixelCoord(Body b) {
-		Transform xf = b.getTransform();//b.getXForm();
-		//return coordWorldToPixels(xf.position); 
+		Transform xf = b.getTransform();
 		return coordWorldToPixels(xf.p); 
 	}
 	
@@ -224,11 +216,4 @@ public class Box2DProcessing {
 	public void destroyBody(Body b) {
 		world.destroyBody(b);
 	}
-
-
-
 }
-
-
-
-
