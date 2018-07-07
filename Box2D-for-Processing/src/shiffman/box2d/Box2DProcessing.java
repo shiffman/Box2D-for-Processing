@@ -5,7 +5,7 @@
  * It's an open question as to whether this should really be a library
  * or a set of examples. Right now, it's a little bit of both
  * Daniel Shiffman <http://www.shiffman.net>
- */
+**/
 
 package shiffman.box2d;
 
@@ -22,6 +22,7 @@ import processing.core.PVector;
 
 public class Box2DProcessing {
 
+	// Processing environment
 	PApplet parent;
 
 	// The Box2D world
@@ -63,40 +64,43 @@ public class Box2DProcessing {
 		scaleFactor = scale;
 	}
 
-	// This is the all important physics "step" function
-	// Says to move ahead one unit in time
-	// Default
+	// This is the all important physics "step" function, it moves the world forward one step in time
+	// The default delta time is 1/60th of a second
 	public void step() {
 		float timeStep = 1.0f / 60f;
 		this.step(timeStep,10,8);
 		world.clearForces();
 	}
 	
-	// Custom step
+	// A custom step function
 	public void step(float timeStep, int velocityIterations, int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
 	}
 	
+	// Eases in forces to the world, eliminating odd behaviour at the start
 	public void setWarmStarting(boolean b) {
 		world.setWarmStarting(b);
 	}
 	
+	// If true, does not skip any physics calculations
 	public void setContinuousPhysics(boolean b) {
 		world.setContinuousPhysics(b);
 	}
 
-	// Create a default world with default gravity
+	// Create a default world with default gravity of -9.81f (downwards)
 	public void createWorld() {
-		Vec2 gravity = new Vec2(0.0f, -10.0f);
+		Vec2 gravity = new Vec2(0.0f, -9.81f);
 		createWorld(gravity);
 		setWarmStarting(true);
 		setContinuousPhysics(true);
 	}
 	
+	// Create a world with a custom gravity, can be 0
 	public void createWorld(Vec2 gravity) {
 		createWorld(gravity,true,true);
 	}
 	
+	// Create a completely custom world
 	public void createWorld(Vec2 gravity, boolean warmStarting, boolean continuous) {
 		world = new World(gravity);
 		setWarmStarting(warmStarting);
@@ -106,6 +110,7 @@ public class Box2DProcessing {
 	    groundBody = world.createBody(bodyDef);
 	}
 	
+	// Returns the ground body.
 	public Body getGroundBody() {
 		return groundBody;
 	}	
@@ -118,7 +123,9 @@ public class Box2DProcessing {
 	// These functions are very important
 	// Box2d has its own coordinate system and we have to move back and forth between them
 	
-	// Converts from Box2d world to pixel space
+	
+	// Convert from the Box2d world to pixel space
+	
 	public Vec2 coordWorldToPixels(Vec2 world) {
 		return coordWorldToPixels(world.x,world.y);
 	}
@@ -134,8 +141,10 @@ public class Box2DProcessing {
 		if (yFlip == -1.0f) pixelY = PApplet.map(pixelY,0f,parent.height, parent.height,0f);
 		return new Vec2(pixelX, pixelY);
 	}
+	
 
-	// Converts a coordinate from pixel space to the box2d world
+	// Convert from pixel space to the Box2D world
+	
 	public Vec2 coordPixelsToWorld(Vec2 screen) {
 		return coordPixelsToWorld(screen.x,screen.y);
 	}
@@ -152,7 +161,9 @@ public class Box2DProcessing {
 		return new Vec2(worldX,worldY);
 	}
 
+	
 	// Scale scalar quantity between worlds
+	
 	public float scalarPixelsToWorld(float val) {
 		return val / scaleFactor;
 	}
@@ -161,7 +172,9 @@ public class Box2DProcessing {
 		return val * scaleFactor;
 	}
 	
+	
 	// Scale vector between worlds
+	
 	public Vec2 vectorPixelsToWorld(Vec2 v) {
 		Vec2 u = new Vec2(v.x/scaleFactor,v.y/scaleFactor);
 		u.y *=  yFlip;
@@ -192,17 +205,19 @@ public class Box2DProcessing {
 		return u;
 	}
 	
-	// A common task we have to do a lot
+	
+	// Common tasks
+	
 	public Body createBody(BodyDef bd) {
 		return world.createBody(bd);
 	}
 	
-	// A common task we have to do a lot
 	public Joint createJoint(JointDef jd) {
 		return world.createJoint(jd);
 	}
 	
-	// Another common task, find the position of a body so that it can be drawn
+	// Find the position of a body in the Box2D world so that it can be drawn in the pixel world
+	
 	public Vec2 getBodyPixelCoord(Body b) {
 		Transform xf = b.getTransform();
 		return coordWorldToPixels(xf.p); 
