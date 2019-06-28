@@ -1,4 +1,6 @@
-A collection of basic examples and/or Processing library to make using JBox2D (http://www.jbox2d.org/) easier for the beginner.
+# Box2D for Processing
+
+A Processing library wrapping JBox2D (http://www.jbox2d.org/).
 
 Download library: http://www.shiffman.net/p5/libraries/box2d_processing/box2d_processing.zip
 
