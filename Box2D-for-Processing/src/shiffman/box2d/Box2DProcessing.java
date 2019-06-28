@@ -22,16 +22,18 @@ import processing.core.PVector;
 
 public class Box2DProcessing {
 
+	private static final int Y_FLIP_INDICATOR = -1;
+	
 	PApplet parent;
 
 	// The Box2D world
-	public World world;
+	World world;
 
 	// Variables to keep track of translating between world and screen coordinates
-	public float transX;// = 320.0f;
-	public float transY;// = 240.0f;
-	public float scaleFactor;// = 10.0f;
-	public float yFlip;// = -1.0f; //flip y coordinate
+	float transX;// = 320.0f;
+	float transY;// = 240.0f;
+	float scaleFactor;// = 10.0f;
+	int yFlip;// = Y_FLIP_INDICATOR; //flip y coordinate
 
 	
 	Body groundBody;
@@ -48,7 +50,7 @@ public class Box2DProcessing {
 		transX = parent.width/2;
 		transY = parent.height/2;
 		scaleFactor = sf;
-		yFlip = -1;
+		yFlip = Y_FLIP_INDICATOR;
 		
 	}
 	
@@ -137,7 +139,7 @@ public class Box2DProcessing {
 	public Vec2 coordWorldToPixels(float worldX, float worldY) {
 		float pixelX = PApplet.map(worldX, 0f, 1f, transX, transX+scaleFactor);
 		float pixelY = PApplet.map(worldY, 0f, 1f, transY, transY+scaleFactor);
-		if (yFlip == -1.0f) pixelY = PApplet.map(pixelY,0f,parent.height, parent.height,0f);
+		if (yFlip == Y_FLIP_INDICATOR) pixelY = PApplet.map(pixelY,0f,parent.height, parent.height,0f);
 		return new Vec2(pixelX, pixelY);
 	}
 
@@ -153,7 +155,7 @@ public class Box2DProcessing {
 	public Vec2 coordPixelsToWorld(float pixelX, float pixelY) {
 		float worldX = PApplet.map(pixelX, transX, transX+scaleFactor, 0f, 1f);
 		float worldY = pixelY;
-		if (yFlip == -1.0f) worldY = PApplet.map(pixelY,parent.height,0f,0f,parent.height);
+		if (yFlip == Y_FLIP_INDICATOR) worldY = PApplet.map(pixelY,parent.height,0f,0f,parent.height);
 		worldY = PApplet.map(worldY, transY, transY+scaleFactor, 0f, 1f);
 		return new Vec2(worldX,worldY);
 	}
@@ -224,7 +226,6 @@ public class Box2DProcessing {
 	public void destroyBody(Body b) {
 		world.destroyBody(b);
 	}
-
 
 
 }
