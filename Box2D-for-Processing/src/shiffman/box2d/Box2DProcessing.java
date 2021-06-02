@@ -28,6 +28,7 @@ public class Box2DProcessing {
 
 	// The Box2D world
 	World world;
+	float timeStep;
 
 	// Variables to keep track of translating between world and screen coordinates
 	float transX;// = 320.0f;
@@ -51,7 +52,7 @@ public class Box2DProcessing {
 		transY = parent.height/2;
 		scaleFactor = sf;
 		yFlip = Y_FLIP_INDICATOR;
-		
+		timeStep = 1.0f / 60f;
 	}
 	
 	public void listenForCollisions() {
@@ -68,14 +69,13 @@ public class Box2DProcessing {
 	// Says to move ahead one unit in time
 	// Default
 	public void step() {
-		float timeStep = 1.0f / 60f;
 		this.step(timeStep,10,8);
-		world.clearForces();
 	}
 	
 	// Custom
 	public void step(float timeStep, int velocityIterations, int positionIterations) {
 		world.step(timeStep, velocityIterations, positionIterations);
+		world.clearForces();
 	}
 	
 	public void setWarmStarting(boolean b) {
@@ -90,8 +90,6 @@ public class Box2DProcessing {
 	public void createWorld() {
 		Vec2 gravity = new Vec2(0.0f, -10.0f);
 		createWorld(gravity);
-		setWarmStarting(true);
-		setContinuousPhysics(true);
 	}
 	
 	public void createWorld(Vec2 gravity) {
@@ -109,8 +107,8 @@ public class Box2DProcessing {
 		setWarmStarting(warmStarting);
 		setContinuousPhysics(continous);
 		
-	    BodyDef bodyDef = new BodyDef();
-	    groundBody = world.createBody(bodyDef);
+	    	BodyDef bodyDef = new BodyDef();
+	    	groundBody = world.createBody(bodyDef);
 	}
 	
 	public Body getGroundBody() {
